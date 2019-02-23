@@ -1,35 +1,52 @@
 ## Put comments here that give an overall description of what your
 ## functions do
 
-## Write a short comment describing this function
+##This function Function makeCacheMatrix gets a matrix as an input, set the value of the matrix,
+#get the value of the matrix, set the inverse Matrix and get the inverse Matrix. The matrix object
+#can cache its own object. 
+
+#<<- operator is used to assign a value to an object in an environment that is different 
+#from the current environment 
+
+#take the matrix as an input
 
 makeCacheMatrix <- function(x = matrix()) {
         invMatrix <- NULL
         
+        #set the value of the Matrix
         setMatrix <- function(y) {
                 x <<- y
                 invMatrix <<- NULL
         }
         
-        getMatrix <- function() x
-        setinvMatrix <- function(inverse) invMatrix <<- inverse
-        getinvMatrix <- function() invMatrix
+        getMatrix <- function() x                                        #get the value of the Matrix
+        setinvMatrix <- function(inverse) invMatrix <<- inverse     #set the value of the invertible matrix
+        getinvMatrix <- function() invMatrix                        #get the value of the invertible matrix
         list(setMatrix = setMatrix, getMatrix = getMatrix,
              setinvMatrix = setinvMatrix,
              getinvMatrix = getinvMatrix)
 }
 
 
-## Write a short comment describing this function
+## The function cacheSolve takes the output of the previous matrix makeCacheMatrix(matrix) as an 
+# input and checks inverse matrix from makeCacheMatrix(matrix) has any value in it or not.
+# In case inverse matrix from makeCacheMatrix((matrix) is empty, it gets the original matrix data from 
+# and set the invertible  matrix by using the solve function.
+# In case inverse matrix from makeCacheMatrix((matrix) has some value in it (always works
+#after running the code 1st time), it returns a message  "Getting Cached Invertible Matrix" 
+#and the cached object
+
+
 
 cacheSolve <- function(x, ...) {
+        #get the value of the invertible matrix from the makeCacheMatrix function
         invMatrix <- x$getinvMatrix()
-        if(!is.null(invMatrix)) {
-                message("getting cached Invertible Matrix")
-                return(invMatrix)
+        if(!is.null(invMatrix)) {                             #if inverse matrix is not NULL
+                message("getting cached Invertible Matrix")   
+                return(invMatrix)                            #return the invertible matrix
         }
-        matrixdata <- x$getMatrix()
-        invMatrix <- solve(matrixdata, ...)
-        x$setinvMatrix(invMatrix)
+        matrixdata <- x$getMatrix()                         #get the original Matrix Data 
+        invMatrix <- solve(matrixdata, ...)                #use solve function to inverse the matrix
+        x$setinvMatrix(invMatrix)                          #set the invertible matrix 
         return(invMatrix)
 }
